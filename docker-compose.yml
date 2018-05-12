@@ -1,0 +1,9 @@
+version: "3"
+
+services:
+
+  blazeplate:
+    container_name: frontend-clis
+    build: ./
+    ports:
+      - "3000:3000"
