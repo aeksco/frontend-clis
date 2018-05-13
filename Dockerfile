@@ -20,6 +20,8 @@ WORKDIR /app
 
 # Install blazeplate_generator
 RUN npm install
+RUN npm install -g @vue/cli
+RUN npm install -g @vue/cli-init
 
 # Serve the app
 CMD ["node", "server.js"]

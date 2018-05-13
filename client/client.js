@@ -1,9 +1,10 @@
 
 // Hits the server interface for opening up a new Twitter stream
-function fetchSocket (params) {
+function runCli () {
 
   // Assembles URL
-  let url = ['/api/tweets', '?', Qs.stringify(params)].join('')
+  // let url = ['/api/vue', '?', Qs.stringify(params)].join('')
+  let url = '/api/vue'
 
   // Returns a Promise to manage async behavior
   return new Promise((resolve, reject) => {
@@ -24,9 +25,6 @@ Vue.component('app-layout', {
     <div class='row'>
 
       <div class='col-sm-12'>
-      </div>
-
-      <div class='col-sm-12'>
         <div class='row'>
           <div class='col-sm-8'>
             <h2>
@@ -39,6 +37,10 @@ Vue.component('app-layout', {
 
         <hr class='border-light' />
 
+      </div>
+
+      <div class='col-sm-12'>
+        <button class='btn btn-success' @click="runCli()">Vue</button>
       </div>
 
     </div>
@@ -56,7 +58,7 @@ Vue.component('app-layout', {
   methods: {
 
     // Opens Socket to server
-    fetchSocket () {
+    runCli () {
 
       // Sets this.fetching to true
       this.fetching = true;
@@ -65,7 +67,7 @@ Vue.component('app-layout', {
       this.tweets = [];
 
       // Sends the Tweets query to the server
-      return fetchSocket(this.params)
+      return runCli(this.params)
       .then((resp) => {
 
         // Sets this.fetching to false
