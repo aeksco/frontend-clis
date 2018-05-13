@@ -2,7 +2,7 @@ version: "3"
 
 services:
 
-  blazeplate:
+  frontend_clis:
     container_name: frontend-clis
     build: ./
     ports:
