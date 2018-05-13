@@ -11,7 +11,7 @@ const { spawn } = require('child_process');
 
 // writeFile
 // Writes the `cli-output.json` file
-function writeFile (tweets) {
+async function writeFile (tweets) {
   return new Promise((resolve, reject) => {
 
     const filename = '/cli-output.json';
@@ -27,38 +27,7 @@ function writeFile (tweets) {
 
 // // // //
 
-// runVueCli
-function runVueCli (tweets) {
-  return new Promise((resolve, reject) => {
-
-    console.log('Running CLI')
-    let args = ['create', 'my-vue-project', '-d']
-    const cmd = spawn('vue', args);
-
-    cmd.stdout.on('data', (data) => {
-      console.log(`stdout: ${data}`);
-    });
-
-    cmd.stderr.on('data', (data) => {
-      console.log(`stderr: ${data}`);
-    });
-
-    cmd.on('close', (code) => {
-      console.log('Closed CLI')
-      if (code === 0) {
-        return resolve();
-      } else {
-        return reject();
-      }
-    });
-
-  });
-
-}
-
-// // // //
-
-function copyVueTemplate () {
+async function copyVueTemplate () {
   return new Promise((resolve, reject) => {
     fs.copy('templates/vue-webpack', 'build/vue-webpack', (err) => {
       if (err) return reject(err)
@@ -152,16 +121,22 @@ app.get('/', (req, res) => {
 
 // // // //
 
+async function handleRequest(req, res) {
+  await writeFile()
+  await copyVueTemplate()
+  return zipBuild(res)
+}
+
 // Runs Vue CLI
 app.get('/api/vue', (req, res) => {
-  return copyVueTemplate()
-  .then(() => {
-    return zipBuild(res)
-    // return res.json({ received: true });
-  })
-  .catch(() => {
-    console.log('ERR')
-  })
+  // return copyVueTemplate()
+  // .then(() => {
+  //   return zipBuild(res)
+  // })
+  // .catch(() => {
+  //   console.log('ERR')
+  // })
+  return handleRequest(req, res)
 });
 
 // // // //
